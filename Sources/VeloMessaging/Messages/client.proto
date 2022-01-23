@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+message RiderMetrics {
+    // The most recently acquired value of the rider's power output, whether from
+    // an on-bike powermeter or from a smart trainer
+    // Units: Watts
+    uint32 power = 1;
+
+    // 
+    optional uint32 cadence = 2;
+
+    // The most recent heart-rate reading available for the rider
+    // Units: beats per minute
+    uint32 heartrate = 3;
+
+    // The current amount of steering input, where 0 is straight ahead,
+    // negative values are left-of-center and positive values are right-of-center
+    // Units: scaled from -1 to +1
+    float steering = 4;
+}
+
+message ClientUpdate {
+    string id = 1;
+    RiderMetrics metrics = 2;
+}

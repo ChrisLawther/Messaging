@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CZeroMQ",
+        "repositoryURL": "https://github.com/ChrisLawther/CZeroMQ",
+        "state": {
+          "branch": null,
+          "revision": "1e08164fdc86573af75f9b7603b1016bf9ef646c",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "SwiftProtobuf",
+        "repositoryURL": "https://github.com/apple/swift-protobuf.git",
+        "state": {
+          "branch": null,
+          "revision": "7e2c5f3cbbeea68e004915e3a8961e20bd11d824",
+          "version": "1.18.0"
+        }
+      },
+      {
+        "package": "SwiftZeroMQ",
+        "repositoryURL": "https://github.com/ChrisLawther/SwiftZeroMQ",
+        "state": {
+          "branch": null,
+          "revision": "7a54d0e9ad4c3abca8a6a22689660b1921f185c5",
+          "version": "0.0.8"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

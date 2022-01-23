@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+import "client.proto";
+
+message Vector3 {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+}
+
+message Vector4 {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+    double w = 4;
+}
+
+message RiderState {
+    // Identifies the rider being described
+    string riderId = 1;
+
+    // The rider's position in space
+    // Units: metres
+    Vector3 position = 2;
+
+    // The rider's velocity
+    // Units: m/s
+    Vector3 velocity = 3;
+
+    // The rider's pitch/roll/yaw
+    // Units: radians(?)
+    Vector4 rotation = 4;
+
+    // Description of the rider's state. Note: these values aren't necessarily those
+    // reported, but are instead used to influence on-screen appearance
+    RiderMetrics metrics = 5;
+}
+
+message Progress {
+    uint32 lapsCompleted = 1;
+    uint32 lapsTotal = 2;
+}
+
+message Duration {
+    uint32 timeRemaining = 1;
+    uint32 totalDuration = 2;
+}
+
+// Sent to subscribers to an event every $interval, to describe the world state
+// that they should interpolate towards
+message EventUpdate {
+    // The event to which the update pertains
+    string eventId = 1;
+
+    // Either a lap or time-based measure of race/event progress 
+    optional Progress progress = 2;
+    optional Duration duration = 3;
+
+    // The new state of every rider in the event
+    repeated RiderState riders = 4;
+}
+
+message JoinResult {
+    string eventId = 1;
+    // The feeling is we don't want to use rider's real ids (the ones the submit power data against)
+    // in any public responses, so we give them a single-use id for this one event
+    string rideAsId = 2;
+}
+
+// Do we want this here, or just in a regular http JSON response?
+// (It'd be much easier to modify/extend if it was in JSON, but it should be behind an API that only returns single-use ids, and only for current events)
+message RiderAppearance {
+    string riderId = 1;
+    string name = 2;
+    string nationality = 3;
+    string riderModel = 4;
+    string bikeModel = 5;
+}
