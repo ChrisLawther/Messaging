@@ -26,10 +26,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "VeloMessaging",
-            dependencies: ["SwiftProtobuf", "SwiftZeroMQ"],
-            exclude: ["Messages/client.proto",
-                      "Messages/server.proto",
-                      "Messages/event.proto"]),
+            dependencies: ["SwiftProtobuf", "SwiftZeroMQ"]),
         .testTarget(
             name: "VeloMessagingTests",
             dependencies: ["VeloMessaging", "SwiftZeroMQ"]),
