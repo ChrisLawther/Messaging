@@ -46,4 +46,26 @@ final class PubSubTests: XCTestCase {
         XCTAssertEqual(identifier, "RiderMetrics")
         XCTAssertEqual(update.power, 243)
     }
+
+    func testSubscriberCanBeNotifiedOfMessagesToTopic() throws {
+        let message = RiderMetrics.with {
+            $0.power = 243
+            $0.cadence = 93
+            $0.heartrate = 165
+        }
+
+        try subscriber.subscribe(to: "update")
+        try publisher.publish(topic: "update", message)
+
+        let subscriberWasNotified = expectation(description: "Subscriber should have received update")
+
+        subscriber.on(topic: "update") { (update: RiderMetrics) in
+            XCTAssertEqual(update.power, 243)
+            XCTAssertEqual(update.cadence, 93)
+            XCTAssertEqual(update.heartrate, 165)
+            subscriberWasNotified.fulfill()
+        }
+
+        wait(for: [subscriberWasNotified], timeout: 1)
+    }
 }

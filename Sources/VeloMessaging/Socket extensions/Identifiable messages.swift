@@ -57,3 +57,23 @@ public extension ReadableSocket {
         }
     }
 }
+
+public extension SubscriberSocket {
+    /// Register a handler for a specific protobuf message type on a specific topic
+    /// - Parameter topic: The topic to monitor
+    /// - Parameter type: The expected message type
+    /// - Parameter handler: Closure to handle any received messages
+    func on<T: SwiftProtobuf.Message>(topic: String, _ type: T.Type = T.self, handler: @escaping (T) -> Void) -> Void {
+        let topic = topic.data(using: .utf8)!
+
+        on(topic) { data in
+            guard data[0] == type.identifier else {
+                return  // Not the expected type
+            }
+            guard let message = try? T.init(serializedData: data[1]) else {
+                return  // Not decodable to the expected type
+            }
+            handler(message)
+        }
+    }
+}
