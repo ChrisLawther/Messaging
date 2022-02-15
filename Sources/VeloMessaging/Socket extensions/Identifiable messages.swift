@@ -2,7 +2,6 @@ import Foundation
 import SwiftProtobuf
 import SwiftZeroMQ
 
-
 /// Thrown when/if the identifiet of a received message does not match the expected identifier
 public struct ProtobufDecodingError: Error, LocalizedError {
     let expectedIdentifier: Data
@@ -28,7 +27,7 @@ public extension WriteableSocket {
     }
 }
 
-public extension WriteableSocket {
+public extension PublisherSocket {
     /// Sends the provided message to the specified topic
     /// - Parameter topic: The topic
     /// - Parameter msg: The message to serialize and send
@@ -36,7 +35,6 @@ public extension WriteableSocket {
         try send([topic.data(using: .utf8)!, msg.serializedData()])
     }
 }
-
 
 // MARK: - Receiving typed, identified messages
 

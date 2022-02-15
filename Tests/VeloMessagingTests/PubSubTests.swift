@@ -5,7 +5,7 @@ import SwiftProtobuf
 
 final class PubSubTests: XCTestCase {
     var ctx: ZMQ!
-    var publisher: WriteableSocket!
+    var publisher: PublisherSocket!
     var subscriber: SubscriberSocket!
 
     static let endpoint = Endpoint.inproc(name: "proto")
