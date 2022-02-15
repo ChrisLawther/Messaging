@@ -3,12 +3,6 @@ import SwiftZeroMQ
 import SwiftProtobuf
 @testable import VeloMessaging
 
-extension WriteableSocket {
-    func publish<T: SwiftProtobuf.Message>(topic: String, _ msg: T) throws {
-        try send([topic.data(using: .utf8)!, T.identifier, msg.serializedData()])
-    }
-}
-
 final class PubSubTests: XCTestCase {
     var ctx: ZMQ!
     var publisher: WriteableSocket!
@@ -39,11 +33,9 @@ final class PubSubTests: XCTestCase {
         let received = try subscriber.receiveMultipartMessage()
 
         let topic = String(data: received[0], encoding: .utf8)
-        let identifier = String(data: received[1], encoding: .utf8)
-        let update = try RiderMetrics.init(serializedData: received[2])
+        let update = try RiderMetrics.init(serializedData: received[1])
 
         XCTAssertEqual(topic, "update")
-        XCTAssertEqual(identifier, "RiderMetrics")
         XCTAssertEqual(update.power, 243)
     }
 

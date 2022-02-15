@@ -28,6 +28,16 @@ public extension WriteableSocket {
     }
 }
 
+public extension WriteableSocket {
+    /// Sends the provided message to the specified topic
+    /// - Parameter topic: The topic
+    /// - Parameter msg: The message to serialize and send
+    func publish<T: SwiftProtobuf.Message>(topic: String, _ msg: T) throws {
+        try send([topic.data(using: .utf8)!, msg.serializedData()])
+    }
+}
+
+
 // MARK: - Receiving typed, identified messages
 
 public extension ReadableSocket {
@@ -61,16 +71,12 @@ public extension ReadableSocket {
 public extension SubscriberSocket {
     /// Register a handler for a specific protobuf message type on a specific topic
     /// - Parameter topic: The topic to monitor
-    /// - Parameter type: The expected message type
     /// - Parameter handler: Closure to handle any received messages
-    func on<T: SwiftProtobuf.Message>(topic: String, _ type: T.Type = T.self, handler: @escaping (T) -> Void) -> Void {
+    func on<T: SwiftProtobuf.Message>(topic: String, handler: @escaping (T) -> Void) -> Void {
         let topic = topic.data(using: .utf8)!
 
         on(topic) { data in
-            guard data[0] == type.identifier else {
-                return  // Not the expected type
-            }
-            guard let message = try? T.init(serializedData: data[1]) else {
+            guard let message = try? T.init(serializedData: data[0]) else {
                 return  // Not decodable to the expected type
             }
             handler(message)
