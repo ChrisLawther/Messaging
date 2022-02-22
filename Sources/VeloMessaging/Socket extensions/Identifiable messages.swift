@@ -38,6 +38,20 @@ public extension PublisherSocket {
 
 // MARK: - Receiving typed, identified messages
 
+public extension SubscriberSocket {
+    /// Register a handler for a specific protobuf message type on a topic identified by the message type
+    /// - Parameter handler: Closure to handle any received messages
+    func subscribe<T: SwiftProtobuf.Message>(handler: @escaping (T) -> Void) throws -> Void {
+        try subscribe(to: T.identifier)
+        on(T.identifier) { data in
+            guard let message = try? T.init(serializedData: data[0]) else {
+                return  // Not decodable to the expected type
+            }
+            handler(message)
+        }
+    }
+}
+
 public extension ReadableSocket {
     /// Receive a typed, identified message
     /// - Returns: A protobuf message

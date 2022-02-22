@@ -60,4 +60,23 @@ final class PubSubTests: XCTestCase {
 
         wait(for: [subscriberWasNotified], timeout: 1)
     }
+
+    func test_SubscribingToAnIdentifiedMessageWorks() throws {
+        let message = RiderMetrics.with {
+            $0.power = 243
+            $0.cadence = 93
+            $0.heartrate = 165
+        }
+
+        let subscriberWasNotified = expectation(description: "Subscriber should have received update")
+
+        try subscriber.subscribe { (msg: RiderMetrics) in
+            subscriberWasNotified.fulfill()
+        }
+
+        // TODO: Really want this to be .publish(msg)
+        try publisher.send(message)
+
+        wait(for: [subscriberWasNotified], timeout: 1)
+    }
 }
