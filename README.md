@@ -1,4 +1,4 @@
-# SwiftZeroMQ+Protobuf
+# Messaging
 
 Bringing together both Apple's [Swift Protobuf][1] package and [SwiftZeroMQ][2], this package does two key things:
 
