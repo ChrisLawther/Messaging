@@ -1,9 +1,9 @@
 import XCTest
 import SwiftZeroMQ
 import SwiftProtobuf
-@testable import VeloMessaging
+@testable import Messaging
 
-final class PubSubTests: XCTestCase {
+final class SubscriberTests: XCTestCase {
     var ctx: ZMQ!
     var publisher: PublisherSocket!
     var subscriber: SubscriberSocket!
@@ -74,8 +74,7 @@ final class PubSubTests: XCTestCase {
             subscriberWasNotified.fulfill()
         }
 
-        // TODO: Really want this to be .publish(msg)
-        try publisher.send(message)
+        try publisher.publish(message)
 
         wait(for: [subscriberWasNotified], timeout: 1)
     }

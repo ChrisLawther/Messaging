@@ -1,11 +1,11 @@
 import XCTest
 import SwiftZeroMQ
 import SwiftProtobuf
-@testable import VeloMessaging
+@testable import Messaging
 
 struct SomeError: Error {}
 
-final class VeloMessagingTests: XCTestCase {
+final class SwiftZeroMQProtobufTests: XCTestCase {
     var ctx: ZMQ!
     var pusher: WriteableSocket!
     var puller: ReadableSocket!
